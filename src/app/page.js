@@ -91,21 +91,21 @@ const DIFFICULTY_SETTINGS = {
     pipeGap: 180,
     gameSpeed: 2,
     jumpForce: -7,
-    label: "Fácil"
+    label: "Easy"
   },
   medium: {
     gravity: 0.5,
     pipeGap: 150,
     gameSpeed: 3,
     jumpForce: -8,
-    label: "Medio"
+    label: "Normal"
   },
   hard: {
     gravity: 0.6,
     pipeGap: 130,
     gameSpeed: 4,
     jumpForce: -9,
-    label: "Difícil"
+    label: "Hard"
   }
 };
 
@@ -115,7 +115,7 @@ const DifficultySelector = ({ onSelect }) => {
   return (
     <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
       <div className={`text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r ${defaultGradient} mb-8`}>
-        Selecciona la Dificultad
+        Select Difficulty
       </div>
       <div className="flex flex-col gap-4">
         {Object.entries(DIFFICULTY_SETTINGS).map(([key, settings]) => (
@@ -130,9 +130,9 @@ const DifficultySelector = ({ onSelect }) => {
             <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity" />
             {settings.label}
             <div className="text-sm opacity-75 mt-1">
-              {key === 'easy' && '(Espacios grandes, velocidad baja)'}
-              {key === 'medium' && '(Espacios medios, velocidad media)'}
-              {key === 'hard' && '(Espacios pequeños, velocidad alta)'}
+              {key === 'easy' && '(Large spaces, low speed)'}
+              {key === 'medium' && '(Medium spaces, medium speed)'}
+              {key === 'hard' && '(Small spaces, high speed)'}
             </div>
           </button>
         ))}
@@ -388,7 +388,7 @@ const FlappyFish = () => {
         {!gameHasStarted && !gameOver && !showDifficultySelector && (
           <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
             <div className={`text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r ${currentFish.body} text-center animate-pulse`}>
-              Click o presiona espacio<br />para nadar
+              Click or press space<br />to swim
             </div>
           </div>
         )}
@@ -397,10 +397,10 @@ const FlappyFish = () => {
         {gameOver && (
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-70 backdrop-blur-sm">
             <div className={`text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r ${currentFish.body} mb-4`}>
-              ¡Juego Terminado!
+              ¡GAME OVER!
             </div>
             <div className="text-xl text-blue-300 mb-4">
-              Puntuación: {score}
+              Score: {score}
             </div>
             <button
               className={`px-6 py-3 bg-gradient-to-r ${currentFish.body} text-white rounded-full font-bold ${currentFish.shadow} hover:brightness-110 transform hover:scale-105 transition-all`}
@@ -409,7 +409,7 @@ const FlappyFish = () => {
                 resetGame();
               }}
             >
-              Jugar de Nuevo
+              Swim Again
             </button>
           </div>
         )}
