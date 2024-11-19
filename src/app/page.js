@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 
 
 const FishDesigns = [
@@ -142,6 +142,19 @@ const DifficultySelector = ({ onSelect }) => {
 };
 
 const FlappyFish = () => {
+  const gameOverSound = useRef(null);
+  const jumpSound = useRef(null);
+
+  useEffect(() => {
+    // Inicializar los objetos de sonido
+    gameOverSound.current = new Audio('gameOver.mp3');
+    jumpSound.current = new Audio('Jump.mp3');
+
+    // Opcional: ajustar el volumen
+    gameOverSound.current.volume = 0.5;
+    jumpSound.current.volume = 0.5;
+  }, []);
+
   const containerWidth = 480;
   const containerHeight = 480;
   const [fishPosition, setFishPosition] = useState(containerHeight / 2);
@@ -172,6 +185,17 @@ const FlappyFish = () => {
       if (!gameHasStarted) {
         setGameHasStarted(true);
       }
+      const jumpAudio = new Audio('Jump.mp3');
+      jumpAudio.volume = 0.5;
+      jumpAudio.currentTime = 10; 
+  
+      jumpAudio.play().catch((error) => {
+        console.error('Error al reproducir el sonido de salto:', error);
+      });
+  
+      setTimeout(() => {
+        jumpAudio.pause();
+      }, 2000);
     }
   }, [gameOver, gameHasStarted, difficulty, showDifficultySelector]);
 
@@ -186,6 +210,21 @@ const FlappyFish = () => {
     setShowDifficultySelector(true);
     setDifficulty(null);
   };
+
+  useEffect(() => {
+    if (gameOver) {
+      // Reproducir sonido de fin del juego
+      if (gameOverSound.current) {
+        gameOverSound.current.currentTime = 1.5;
+        gameOverSound.current.play().catch((error) => {
+          console.error('Error al reproducir el sonido de fin del juego:', error);
+        });
+        setTimeout(() => {
+          gameOverSound.current.pause();
+        }, 2000);
+      }
+    }
+  }, [gameOver]);
 
   useEffect(() => {
     let gameLoop;
