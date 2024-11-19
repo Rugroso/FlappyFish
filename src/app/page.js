@@ -1,5 +1,6 @@
 'use client'
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { Howl } from 'howler';
 
 
 const FishDesigns = [
@@ -140,19 +141,23 @@ const DifficultySelector = ({ onSelect }) => {
     </div>
   );
 };
-
+let jumpSound
 const FlappyFish = () => {
   const gameOverSound = useRef(null);
-  const jumpSound = useRef(null);
-
+  useEffect(() => {
+    // Inicializar el sonido
+    jumpSound = new Howl({
+      src: ['Jump.mp3'],
+      volume: 0.5,
+    });
+  }, []);
+  
   useEffect(() => {
     // Inicializar los objetos de sonido
     gameOverSound.current = new Audio('gameOver.mp3');
-    jumpSound.current = new Audio('Jump.mp3');
 
     // Opcional: ajustar el volumen
     gameOverSound.current.volume = 0.5;
-    jumpSound.current.volume = 0.5;
   }, []);
 
   const containerWidth = 480;
@@ -179,22 +184,20 @@ const FlappyFish = () => {
     setShowDifficultySelector(false);
   };
 
+
+
   const handleJump = useCallback(() => {
     if (!gameOver && difficulty && !showDifficultySelector) {
       setVelocity(difficulty.jumpForce);
       if (!gameHasStarted) {
         setGameHasStarted(true);
       }
-      const jumpAudio = new Audio('Jump.mp3');
-      jumpAudio.volume = 0.5;
-      // Reproducir el sonido de salto
-      jumpAudio.currentTime = 0;
-      jumpAudio.play().catch((error) => {
-        console.error('Error al reproducir el sonido de salto:', error);
-      });
+
+      // Reproducir el sonido
+      jumpSound.play();
     }
-  
   }, [gameOver, gameHasStarted, difficulty, showDifficultySelector]);
+
 
   const resetGame = () => {
     setFishPosition(containerHeight / 2);
