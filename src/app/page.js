@@ -187,7 +187,7 @@ const FlappyFish = () => {
       }
       const jumpAudio = new Audio('Jump.mp3');
       jumpAudio.volume = 0.5;
-      jumpAudio.currentTime = 10; 
+      jumpAudio.currentTime = 9; 
   
       jumpAudio.play().catch((error) => {
         console.error('Error al reproducir el sonido de salto:', error);
