@@ -142,12 +142,17 @@ const DifficultySelector = ({ onSelect }) => {
   );
 };
 let jumpSound
+let gameOverSound
 const FlappyFish = () => {
-  const gameOverSound = useRef(null);
+
   useEffect(() => {
     // Inicializar el sonido
     jumpSound = new Howl({
       src: ['Jump.mp3'],
+      volume: 0.5,
+    });
+    gameOverSound = new Howl({
+      src: ['gameOver.mp3'],
       volume: 0.5,
     });
   }, []);
@@ -192,8 +197,6 @@ const FlappyFish = () => {
       if (!gameHasStarted) {
         setGameHasStarted(true);
       }
-
-      // Reproducir el sonido
       jumpSound.play();
     }
   }, [gameOver, gameHasStarted, difficulty, showDifficultySelector]);
@@ -213,16 +216,7 @@ const FlappyFish = () => {
 
   useEffect(() => {
     if (gameOver) {
-      // Reproducir sonido de fin del juego
-      if (gameOverSound.current) {
-        gameOverSound.current.currentTime = 1.5;
-        gameOverSound.current.play().catch((error) => {
-          console.error('Error al reproducir el sonido de fin del juego:', error);
-        });
-        setTimeout(() => {
-          gameOverSound.current.pause();
-        }, 2000);
-      }
+        gameOverSound.play();
     }
   }, [gameOver]);
 
